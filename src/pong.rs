@@ -13,6 +13,7 @@ use amethyst::{
     utils::application_root_dir,
 };
 
+use crate::audio::initialise_audio;
 use amethyst::core::timing::Time;
 
 pub const ARENA_HEIGHT: f32 = 100.0;
@@ -68,6 +69,7 @@ impl SimpleState for Pong {
         initialise_paddles(world, self.sprite_sheet_handle.clone().unwrap());
         initialise_camera(world);
         initialise_scoreboard(world);
+        initialise_audio(world);
     }
 }
 
