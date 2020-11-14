@@ -7,6 +7,7 @@ use amethyst::{
         types::DefaultBackend,
         RenderingBundle,
     },
+    ui::{RenderUi, UiBundle},
     utils::application_root_dir,
 };
 
@@ -29,8 +30,10 @@ fn main() -> amethyst::Result<()> {
         // Add the transform bundle which handles tracking entity positions
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
+        .with_bundle(UiBundle::<StringBindings>::new())?
         .with(systems::PaddleSystem, "paddle_system", &["input_system"])
         .with(systems::MoveBallsSystem, "ball_system", &[])
+        .with(systems::WinnerSystem, "winner_system", &["ball_system"])
         .with(
             systems::BounceSystem,
             "collision_system",
@@ -45,7 +48,8 @@ fn main() -> amethyst::Result<()> {
                         .with_clear([0.00196, 0.23726, 0.21765, 1.0]),
                 )
                 // RenderFalt2D plugin is used to render entities with a `SprintRender` component.
-                .with_plugin(RenderFlat2D::default()),
+                .with_plugin(RenderFlat2D::default())
+                .with_plugin(RenderUi::default()),
         )?;
     let assets_dir = app_root.join("assets");
     let mut game = Application::new(assets_dir, Pong::default(), game_data)?;
